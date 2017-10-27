@@ -1,37 +1,60 @@
 package data.logic;
 
-import java.io.IOException;
-import java.util.Map;
-
+import java.util.ArrayList;
+import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.springboot.data.entity.YahooStock;
+import com.springboot.data.repository.StockRepository;
 
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
+public class StockLoader extends TimerTask{
 
-public class StockLoader {
-	
 	public static final Logger logger = LoggerFactory.getLogger(StockLoader.class);
+	public final static String[] stocks = new String[] {"INTC", "BABA", "TSLA", "AIR.PA", "YHOO"};
+	private StockRepository repository;
 	
-	
-	public StockLoader() {
+	public StockLoader(StockRepository repo) {
+		repository = repo;
 	}
 	
-	public static Map<String, Stock> loadStocksByNames(String[] stockStrings) {
-		//String[] symbols = new String[] {"INTC", "BABA", "TSLA", "AIR.PA", "YHOO"};
-		
-		try {
-			return YahooFinance.get(stockStrings);
-		} catch (IOException e) {
-			logger.error(e.toString());
-			System.out.println(e.getMessage());
+	private void populate() {
+		repository.deleteAll();
+/*		repository.save(StockLoader.loadStockByName("INTC"));
+		repository.save(StockLoader.loadStockByName("BBD-B.TO"));*/
+		ArrayList<YahooStock> majorStocks = StockLoader.loadMajorStocks();
+		for(YahooStock yStock : majorStocks) {
+			repository.save(yStock);
 		}
-		return null;
+		
+		System.out.println("Stocks that are found with findAll():");
+		System.out.println("-------------------------------");
+		for (YahooStock stocks : repository.findAll()) {
+			System.out.println(stocks);
+		}
+		
+		System.out.println(repository.findStockBySymbol("INTC"));
+	}
+	
+	
+	public static ArrayList<YahooStock> loadMajorStocks() {
+		return loadStocksByNames(stocks);
+	}
+	
+	private static ArrayList<YahooStock> loadStocksByNames(String[] stockStrings) {
+		ArrayList<YahooStock> yList = new ArrayList<YahooStock>();
+		for(String stock : stockStrings) {
+			yList.add(loadStockByName(stock));
+		}
+		
+		return yList;
 	}
 	
 	public static YahooStock loadStockByName(String symb) {
 			return new YahooStock().getStock(symb);
 		}
+
+	@Override
+	public void run() {
+		populate();
+	}
 }

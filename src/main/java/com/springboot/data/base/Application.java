@@ -1,5 +1,6 @@
 package com.springboot.data.base;
 
+import java.util.Timer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -7,9 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import com.springboot.data.entity.YahooStock;
 import com.springboot.data.repository.StockRepository;
-
 import data.logic.StockLoader;
 
 @SpringBootApplication(scanBasePackages={"com.springboot.data"})
@@ -27,17 +26,7 @@ public class Application implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		repository.deleteAll();
-		
-		repository.save(StockLoader.loadStockByName("INTC"));
-		System.out.println("Person found with findAll():");
-		System.out.println("-------------------------------");
-		for (YahooStock stocks : repository.findAll()) {
-			System.out.println(stocks);
-		}
-		
-		System.out.println(repository.findStockBySymbol("INTC"));
-		
+		Timer timer = new Timer();
+		timer.schedule(new StockLoader(repository), 0, 5000);
 	}
-
 }
