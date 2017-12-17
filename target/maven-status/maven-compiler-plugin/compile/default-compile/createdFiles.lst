@@ -1,4 +1,1 @@
-com\springboot\data\entity\Person.class
-com\springboot\data\base\Application.class
-com\springboot\data\repository\PersonRepository.class
-com\springboot\data\controller\RestApiController.class
+com\springboot\data\entity\YahooStock.class

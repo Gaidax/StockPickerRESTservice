@@ -1,4 +1,5 @@
 C:\Users\Gaidax\workspace\StockPickerData\src\main\java\com\springboot\data\base\Application.java
-C:\Users\Gaidax\workspace\StockPickerData\src\main\java\com\springboot\data\repository\PersonRepository.java
-C:\Users\Gaidax\workspace\StockPickerData\src\main\java\com\springboot\data\controller\RestApiController.java
-C:\Users\Gaidax\workspace\StockPickerData\src\main\java\com\springboot\data\entity\Person.java
+C:\Users\Gaidax\workspace\StockPickerData\src\main\java\data\logic\StockLoader.java
+C:\Users\Gaidax\workspace\StockPickerData\src\main\java\com\springboot\data\controller\StockController.java
+C:\Users\Gaidax\workspace\StockPickerData\src\main\java\com\springboot\data\entity\YahooStock.java
+C:\Users\Gaidax\workspace\StockPickerData\src\main\java\com\springboot\data\repository\StockRepository.java

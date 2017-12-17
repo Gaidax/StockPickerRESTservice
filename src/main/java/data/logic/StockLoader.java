@@ -1,16 +1,20 @@
-package data.logic;
+/*package data.logic;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.springboot.data.entity.YahooStock;
-import com.springboot.data.repository.StockRepository;
+
+import yahoofinance.histquotes.HistoricalQuote;
+import yahoofinance.histquotes.Interval;
 
 public class StockLoader extends TimerTask{
 
 	public static final Logger logger = LoggerFactory.getLogger(StockLoader.class);
-	public final static String[] stocks = new String[] {"INTC", "BABA", "TSLA", "AIR.PA", "YHOO"};
+	public static final  String[] stocks = new String[] {"INTC", "BABA", "TSLA", "AIR.PA"};
 	private StockRepository repository;
 	
 	public StockLoader(StockRepository repo) {
@@ -18,9 +22,7 @@ public class StockLoader extends TimerTask{
 	}
 	
 	private void populate() {
-		repository.deleteAll();
-/*		repository.save(StockLoader.loadStockByName("INTC"));
-		repository.save(StockLoader.loadStockByName("BBD-B.TO"));*/
+		//repository.deleteAll();
 		ArrayList<YahooStock> majorStocks = StockLoader.loadMajorStocks();
 		for(YahooStock yStock : majorStocks) {
 			repository.save(yStock);
@@ -33,6 +35,15 @@ public class StockLoader extends TimerTask{
 		}
 		
 		System.out.println(repository.findStockBySymbol("INTC"));
+		 
+		List<YahooStock> google = new YahooStock().getStock("GOOG", true);
+		System.out.println("Stocks that are found Historical:");
+		System.out.println("-------------------------------");
+		for(YahooStock quote : google) {
+			System.out.println(quote.getDate());
+		}
+			
+		
 	}
 	
 	
@@ -40,21 +51,18 @@ public class StockLoader extends TimerTask{
 		return loadStocksByNames(stocks);
 	}
 	
-	private static ArrayList<YahooStock> loadStocksByNames(String[] stockStrings) {
+	private static ArrayList<YahooStock> loadStocksByNames(String[] quoteStrings) {
 		ArrayList<YahooStock> yList = new ArrayList<YahooStock>();
-		for(String stock : stockStrings) {
-			yList.add(loadStockByName(stock));
+		for(String quote : quoteStrings) {
+			yList.add(new YahooStock().getStock(quote, false).get(0));
 		}
 		
 		return yList;
 	}
 	
-	public static YahooStock loadStockByName(String symb) {
-			return new YahooStock().getStock(symb);
-		}
-
 	@Override
 	public void run() {
 		populate();
 	}
 }
+*/
